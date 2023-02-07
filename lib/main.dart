@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather/screens/loading_page.dart';
 
+// 1.최초로 MyApp을 호출
 void main() {
   runApp(const MyApp());
 }
@@ -25,6 +26,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+
+      // 2. MyApp은 LoadingPage를 호출한다.
       home: const LoadingPage(),
     );
   }
