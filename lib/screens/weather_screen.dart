@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'loading_page.dart';
 
 class WeatherScreen extends StatefulWidget {
@@ -38,17 +39,52 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('$cityName'),
-          SizedBox(
-            height: 10,
-          ),
-          Text('$temp')
+      // 바디를 앱바 뒤의 위치까지 확장시켜 앱바를 숨기기
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('weather'),
+        // 앱바 색상 사라지게 하기
+        backgroundColor: Colors.transparent,
+        // 음양 없애기
+        elevation: 0,
+        // 좌측 아이콘은 leading을 사용하고 우측 아이콘은 actions를 사용한다.
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.near_me),
+          iconSize: 30,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.location_searching),
+            iconSize: 30,
+          )
         ],
-      )),
+      ),
+      body: Container(
+        // Stack은 쌓아 올린다는 의미
+        child: Stack(
+          children: [
+            Image.asset(
+              'assets/image/background.jpg',
+              fit: BoxFit.cover,
+              // // 배경 꽉 채워주기
+              // width: double.infinity,
+              // height: double.infinity,
+            ),
+            Container(
+              child: Column(
+                children: [
+                  Text(
+                    'Seoul',
+                    // style: GoogleFonts.lato(),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
