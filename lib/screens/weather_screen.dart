@@ -4,28 +4,38 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'loading_page.dart';
+import 'package:weather/model/model.dart';
 
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({required this.parseWeatherData, super.key});
-  final parseWeatherData;
+  const WeatherScreen(
+      {this.parseWeatherData, this.parseAirPollution, super.key});
+  final dynamic parseWeatherData;
+  final dynamic parseAirPollution;
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  Model model = Model();
   late String cityName;
   late int temp;
+  late Widget icon;
+  late String des;
+  late Widget airIcon;
+  late Widget airState;
+  late double dust1;
+  late double dust2;
   var date = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    updateData(widget.parseWeatherData);
+    updateData(widget.parseWeatherData, widget.parseAirPollution);
   }
 
-  void updateData(dynamic weatherData) {
+  void updateData(dynamic weatherData, dynamic airData) {
     // json데이터의 타입은 미리 예측을 할 수 없기 때문에, jsonDecode의 메소드 타입은
     // dynamic이다 그렇기 때문에 jsonDecode의 데이터 값을 변수로 받아오기 위해서는
     // var 키워드를 사용해야 한다.
@@ -33,7 +43,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     // print(myJson);
 
     double temp2 = weatherData['main']['temp'];
+    des = weatherData['weather'][0]['description'];
+    int condition = weatherData['weather'][0]['id'];
+    int index = airData['list'][0]['main']['aqi'];
+    dust1 = airData['list'][0]['components']['pm10'];
+    dust2 = airData['list'][0]['components']['pm2_5'];
+    airIcon = model.getAirIcon(index);
+    airState = model.getAirCondition(index);
     temp = temp2.round();
+    icon = model.getWeatherIcon(condition);
 
     cityName = weatherData['name'];
     print(temp);
@@ -101,7 +119,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             height: 150,
                           ),
                           Text(
-                            'Seoul',
+                            cityName,
                             style: GoogleFonts.lato(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
@@ -142,7 +160,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         children: [
                           Text(
                             // 기온과 함께 유니코드 넣어주기
-                            '18\u2103',
+                            '$temp\u2103',
                             style: GoogleFonts.lato(
                                 fontSize: 85,
                                 fontWeight: FontWeight.w300,
@@ -150,12 +168,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           ),
                           Row(
                             children: [
-                              SvgPicture.asset('svg/climacon-sun.svg'),
+                              icon,
                               const SizedBox(
                                 width: 10,
                               ),
                               Text(
-                                'clear sky',
+                                des,
                                 style: GoogleFonts.lato(
                                     fontSize: 16, color: Colors.white),
                               )
@@ -187,21 +205,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Image.asset(
-                              'image/bad.png',
-                              width: 37,
-                              height: 35,
-                            ),
+                            airIcon,
                             const SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              '매우 나쁨',
-                              style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Colors.black),
-                            ),
+                            airState,
                           ],
                         ),
                         Column(
@@ -215,7 +223,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               height: 10,
                             ),
                             Text(
-                              '174.75',
+                              '$dust1',
                               style: GoogleFonts.lato(
                                   fontSize: 24, color: Colors.white),
                             ),
@@ -242,7 +250,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               height: 10,
                             ),
                             Text(
-                              '84.03',
+                              '$dust2',
                               style: GoogleFonts.lato(
                                   fontSize: 24, color: Colors.white),
                             ),

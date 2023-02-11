@@ -39,18 +39,24 @@ class _LoadingPageState extends State<LoadingPage> {
     print(longitude3);
 
     NetWork network = NetWork(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric',
+        'https://api.openweathermap.org/data/2.5/air_pollution?lat=$latitude3&lon=$longitude3&appid=$apikey');
 
     // parsing된 json데이터를 출력해주기 위해 var타입의 weatherdata라는 변수에다 network.getJsonData()를 넣어준다.
     // getJsonData는 Future<dynamic>타입으로 await키워드를 넣어준다.
     var weatherData = await network.getJsonData();
     print(weatherData);
+
+    var airData = await network.getAirData();
+    print(airData);
     // WeatherScreen으로 페이지 이동 시 parseWeatherData에 weatherData를 전달
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                WeatherScreen(parseWeatherData: weatherData)));
+            builder: (context) => WeatherScreen(
+                  parseWeatherData: weatherData,
+                  parseAirPollution: airData,
+                )));
   }
 
   // 인터넷에서 데이터 불러오기
