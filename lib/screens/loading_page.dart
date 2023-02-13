@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:weather/data/my_location.dart';
 import 'package:weather/data/network.dart';
 import 'package:weather/screens/weather_screen.dart';
@@ -81,13 +82,11 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
-        child: OutlinedButton(
-          onPressed: null,
-          child: Text(
-            'Get my location',
-            style: TextStyle(color: Colors.red),
-          ),
+        child: SpinKitPouringHourGlass(
+          color: Colors.black,
+          size: 80,
         ),
       ),
     );

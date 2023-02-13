@@ -42,6 +42,7 @@ dependencies:
   flutter_svg: ^2.0.0+1 # SVG 이미지의 사용을 도와주는 패키지
   timer_builder: ^2.0.0 # 현재 시간, 날짜, 요일 불러오기
   intl: ^0.18.0 # date fotmat을 사용하기 위해 필요한 패키지
+  flutter_spinkit: ^5.1.0 # 다양한 로딩 애니메이션 제공
 
 dev_dependencies:
   flutter_test:
